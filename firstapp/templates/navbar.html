@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% comment %} <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title> {% endcomment %}
+
+    
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets3/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/templatemo-hexashop.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/lightbox.css' %}">
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        
+                        
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            
+                            <li class="scroll-to-section"><a href="{% url 'index' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'user_Buses' %}">BUS</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'select_movie' %}">MOVIE</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'flight_booking_list' %}">FLIGHT</a></li>
+                            
+                            <li class="submenu">
+                                <a href="javascript:;">My Bookings</a>
+                                <ul>
+                                    <li><a href="{% url 'myMovies'%}">Movies</a></li>
+                                    <li><a href="{% url 'Bus_bookings_list' %}">Bus Journey</a></li>
+                                    <li><a href="{% url 'boarding_pass' %}">Flights</a></li>
+                                </ul>
+                            </li>
+                            {% if not request.session.email %}
+
+                            <li class="submenu">
+                                <a href="javascript:;">Log In</a>
+                                <ul>
+
+                                    <li class="scroll-to-section"><a href="{% url 'login' %}">Log In</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'register' %}">SignUp</a></li>
+                                    </ul>
+                                                                {% endif %}
+
+                            </li>
+                            {% if request.session.email %}
+                            <li class="scroll-to-section"><a href="{% url 'logout_view' %}">Logout</a></li>
+                            
+                            {% endif %}
+                        </ul>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="main-banner" id="top">
+        {% block body %}
+        {% endblock %}
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+
+<!-- jQuery -->
+<script src="{% static 'assets3/js/jquery-2.1.0.min.js' %}"></script>
+
+<!-- Bootstrap -->
+<script src="{% static 'assets3/js/popper.js' %}"></script>
+<script src="{% static 'assets3/js/bootstrap.min.js' %}"></script>
+
+<!-- Plugins -->
+<script src="{% static 'assets3/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets3/js/accordions.js' %}"></script>
+<script src="{% static 'assets3/js/datepicker.js' %}"></script>
+<script src="{% static 'assets3/js/scrollreveal.min.js' %}"></script>
+<script src="{% static 'assets3/js/waypoints.min.js' %}"></script>
+<script src="{% static 'assets3/js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'assets3/js/imgfix.min.js' %}"></script> 
+<script src="{% static 'assets3/js/slick.js' %}"></script> 
+<script src="{% static 'assets3/js/lightbox.js' %}"></script> 
+<script src="{% static 'assets3/js/isotope.js' %}"></script> 
+
+<!-- Global Init -->
+<script src="{% static 'assets3/js/custom.js' %}"></script>
+
+<script>
+    $(function() {
+        var selectedClass = "";
+        $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+            $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+                $("."+selectedClass).fadeIn();
+                $("#portfolio").fadeTo(50, 1);
+            }, 500);
+        });
+    });
+</script>
+

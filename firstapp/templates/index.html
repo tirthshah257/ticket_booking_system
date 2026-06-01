@@ -1,0 +1,152 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="main-banner" id="top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="left-content">
+                        <div class="thumb">
+                            <div class="inner-content">
+                                {% comment %} <h4>We Are Hexashop</h4>
+                                <span>Awesome, clean &amp; creative HTML5 Template</span>
+                                <div class="main-border-button">
+                                    <a href="#">Purchase Now!</a>
+                                </div> {% endcomment %}
+                            </div>
+                            <img height="612px" src="{% static 'assets3/images/main.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="right-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>BOOK BUS </h4>
+                                            <span>Let's go by road..!</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>BUS</h4>
+                                                <p>" Your Journey Starts Here: Book Your Bus Tickets Now! "</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'user_Buses' %}">Book here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img height= "290px" width="250px" src="{% static 'assets3/images/bus2.jpeg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>BOOK FLIGHT</h4>
+                                            <span>Let's go by the cloudes...</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>FLIGHT</h4>
+                                                <p>" Take Off to Your Next Adventure: Book Your Flight! "</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url  'flight_booking_list' %}">Book here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img height= "290px" width="250px" src="{% static 'assets3/images/flight.jpeg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>BOOK MOVIE</h4>
+                                            <span>Let's whatch somthing NEW</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>MOVIE</h4>
+                                                <p>"Lights, Camera, Action: Get Your Tickets for the Hottest Films!"</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'select_movie' %}">Book here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img height= "290px" width="250px" src="{% static 'assets3/images/movie.jpeg' %}"> 
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>Accessories</h4>
+                                            <span>Best Trend Accessories</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Accessories</h4>
+                                                <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                <div class="main-border-button">
+                                                    <a href="#">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="{% static 'assets3/images/baner-right-image-04.jpg' %}">
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+
+<!-- jQuery -->
+<script src="{% static 'assets3/js/jquery-2.1.0.min.js' %}"></script>
+
+<!-- Bootstrap -->
+<script src="{% static 'assets3/js/popper.js' %}"></script>
+<script src="{% static 'assets3/js/bootstrap.min.js' %}"></script>
+
+<!-- Plugins -->
+<script src="{% static 'assets3/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets3/js/accordions.js' %}"></script>
+<script src="{% static 'assets3/js/datepicker.js' %}"></script>
+<script src="{% static 'assets3/js/scrollreveal.min.js' %}"></script>
+<script src="{% static 'assets3/js/waypoints.min.js' %}"></script>
+<script src="{% static 'assets3/js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'assets3/js/imgfix.min.js' %}"></script> 
+<script src="{% static 'assets3/js/slick.js' %}"></script> 
+<script src="{% static 'assets3/js/lightbox.js' %}"></script> 
+<script src="{% static 'assets3/js/isotope.js' %}"></script> 
+
+<!-- Global Init -->
+<script src="{% static 'assets3/js/custom.js' %}"></script>
+
+<script>
+    $(function() {
+        var selectedClass = "";
+        $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+            $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+                $("."+selectedClass).fadeIn();
+                $("#portfolio").fadeTo(50, 1);
+            }, 500);
+        });
+    });
+</script>
+{% endblock %}
+

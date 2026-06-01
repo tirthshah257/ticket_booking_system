@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if booking %}Edit Movie Booking{% else %}Add New Movie Booking{% endif %}</title>
+</head>
+<body>
+    <h1>{% if booking %}Edit Movie Booking{% else %}Add New Movie Booking{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="user">User:</label>
+        <select id="user" name="user" required>
+            {% for user in users %}
+                <option value="{{ user.pk }}" {% if booking and booking.user.pk == user.pk %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="movie">Movie:</label>
+        <select id="movie" name="movie" required>
+            {% for movie in movies %}
+                <option value="{{ movie.pk }}" {% if booking and booking.movie.pk == movie.pk %}selected{% endif %}>{{ movie.mv_name }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="time">Time:</label>
+        <select id="time" name="time" required>
+            {% for time in times %}
+                <option value="{{ time.pk }}" {% if booking and booking.time.pk == time.pk %}selected{% endif %}>{{ time.timing }}</option>
+            {% endfor %}
+        </select><br>
+        <button type="submit">{% if booking %}Update{% else %}Create{% endif %}</button>
+    </form>
+    <a href="{% url 'movie_booking_list' %}">Cancel</a>
+</body>
+</html>

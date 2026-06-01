@@ -1,0 +1,499 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Seat Chart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Styling for the gap seats */
+        .gap-seat {
+            background-color: transparent;
+            border: none;
+            cursor: not-allowed;
+        }
+
+        /* Container for the seat chart */
+        div.seatCharts-container {
+            min-width: 700px; /* Ensure enough width for the seat map */
+        }
+
+        /* Style for each seat cell */
+        div.seatCharts-cell {
+            height: 20px;
+            width: 20px;
+            margin: 3px;
+            float: left;
+            text-align: center; /* Center text horizontally */
+            outline: none;
+            font-size: 11px;
+            line-height: 20px; /* Adjusted to match the height */
+            color: blue;
+        }
+
+        /* Base style for all seat elements */
+        div.seatCharts-seat {
+            background-color: white;
+            color: red;
+            border-radius: 5px; /* Rounded corners */
+            cursor: default;
+            display: inline-block; /* Ensure inline-block for alignment */
+            text-align: center; /* Center text horizontally */
+            line-height: 20px; /* Ensure vertical centering */
+        }
+
+        /* Focus state for seat elements */
+        div.seatCharts-seat:focus {
+            outline: none;
+            border: 2px solid red; /* Border for focus state */
+        }
+
+        /* Style for available seats */
+        div.seatCharts-seat.available {
+            background-color: white;
+            color: red;
+            border: 2px solid rgba(255, 0, 0, 0.8); /* Red border with 50% opacity */
+        }
+
+        /* Style for selected seats */
+        div.seatCharts-seat.selected {
+            background-color: red;
+            color: white; /* Text color for selected seats */
+        }
+
+        /* Style for focused seats */
+        div.seatCharts-seat.focused {
+            background-color: red;
+            color: white; /* Text color for focused seats */
+        }
+
+        /* Style for unavailable seats */
+        div.seatCharts-seat.unavailable {
+            background-color: grey;
+            cursor: not-allowed; /* Not-allowed cursor for unavailable seats */
+        }
+
+        /* Style for space (non-seats) */
+        div.seatCharts-space {
+            background-color: white;
+        }
+
+        /* Style for each row of seats */
+        div.seatCharts-row {
+            height: 50px;
+        }
+
+        /* Clear floats after each row */
+        div.seatCharts-row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Center align seat map */
+        #seat-map {
+            text-align: center;
+            margin-right: 30px; /* Space between seat chart and the form */
+        }
+
+        /* Style for booking details section */
+        .booking-details {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        div.seatCharts-seat.sold {
+            background-color: rgba(0, 0, 0, 0.3); /* Orange color for sold seats */
+            color: white; /* White text color */
+            cursor: none;
+            border: none;
+        }
+
+        /* Style for the card */
+        .card-container {
+            max-width: 500px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Standard box shadow */
+        }
+
+        .card-header {
+            background-color: #122d50;
+            color: white;
+        }
+
+        .card-body {
+            background-color: #122d50;
+            padding: 20px;
+            color: aliceblue;
+        }
+    </style>
+    <!-- Include jQuery before jQuery Seat Charts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'jquery.seat-charts.js' %}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+    <div id="seat-map" class="seatCharts-container">
+        <!-- The seats will be dynamically generated here -->
+    </div>
+          </div>
+          <div class="col">
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Create Passenger</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'passenger_create' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                    </div>
+                    <input type="hidden" class="form-control" name="schedule_id" value="{{ schedule_id }}"required>
+
+                    {% comment %} <div class="form-group">
+                        <label for="passport_number">Passport Number</label>
+                        <input type="text" class="form-control" id="passport_number" name="passport_number" required>
+                    </div> {% endcomment %}
+                    <button type="submit" class="btn btn-primary">Create Passenger</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Select Passengers</h2>
+            </div>
+            <div class="card-body">
+                <form id="reservation-form" method="POST" action="{% url 'select_flight' schedule.schedule_id %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="selected-seats-data" name="seats">
+
+                    <div class="form-group">
+                        <label for="passenger-selection">Select Passengers</label>
+                        {% for passenger in passengers %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="passengers" value="{{ passenger.id }}" id="passenger_{{ passenger.id }}">
+                                <label class="form-check-label" for="passenger_{{ passenger.id }}">
+                                    {{ passenger.firstname }} {{ passenger.lastname }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="booking-details">
+                        <h2>Booking Details</h2>
+                        <h3>Selected Seats (<span id="counter">0</span>):</h3>
+                        <ul id="selected-seats"></ul>
+                        Total: <b>$<span id="total" name="total">0</span></b>
+                        <button type="submit" class="checkout-button btn btn-success">Checkout &raquo;</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+          {% comment %} </div>
+    <form id="reservation-form" method="POST" action="{% url 'select_flight' schedule.schedule_id %}">
+        {% csrf_token %}
+        <input type="hidden" id="selected-seats-data" name="seats">
+
+        <div class="booking-details">
+            <h2>Booking Details</h2>
+            <h3>Selected Seats (<span id="counter">0</span>):</h3>
+            <ul id="selected-seats"></ul>
+            Total: <b>$<span id="total" name="total">0</span></b>
+            <button type="submit" class="checkout-button btn btn-success">Checkout &raquo;</button>
+        </div>
+    </form> {% endcomment %}
+
+    <script>
+        $(document).ready(function () {
+            // Manually define the seat map for rows 'A' to 'Z'
+            var seatMap = [
+                'A:A:A:___:A:A:A:',
+                'B:B:B:___:B:B:B:',
+                'C:C:C:___:C:C:C:',
+                'D:D:D:___:D:D:D:',
+                'E:E:E:___:E:E:E:',
+                'F:F:F:___:F:F:F:',
+                'G:G:G:___:G:G:G:',
+                'H:H:H:___:H:H:H:',
+                'I:I:I:___:I:I:I:',
+                'J:J:J:___:J:J:J:',
+                'K:K:K:___:K:K:K:',
+                'L:L:L:___:L:L:L:',
+                'M:M:M:___:M:M:M:',
+                'N:N:N:___:N:N:N:',
+                'O:O:O:___:O:O:O:',
+                'P:P:P:___:P:P:P:',
+                'Q:Q:Q:___:Q:Q:Q:',
+                'R:R:R:___:R:R:R:',
+                'S:S:S:___:S:S:S:',
+                'T:T:T:___:T:T:T:',
+                'U:U:U:___:U:U:U:',
+                'V:V:V:___:V:V:V:',
+                'W:W:W:___:W:W:W:',
+                'X:X:X:___:X:X:X:',
+                'Y:Y:Y:___:Y:Y:Y:',
+                'Z:Z:Z:___:Z:Z:Z:'
+            ];
+
+            // Use Django template to inject reserved seats data into JavaScript
+            var reservedSeats = {{ reserved_seats|safe }}; // Ensure this is a valid JSON array
+
+            console.log(reservedSeats)
+            // Initialize seatCharts
+            var sc = $('#seat-map').seatCharts({
+                map: seatMap,
+                seats: {
+                    A: {
+                        price: 180,
+                        classes: 'A',
+                        category: 'A'
+                    },
+                    B: {
+                        price: 180,
+                        classes: 'A',
+                        category: 'A'
+                    },
+                    C: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    D: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    E: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    F: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    G: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    H: {
+                        price: 240,
+                        classes: 'C',
+                        category: 'C'
+                    },
+                    I: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    J: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    K: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    L: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    M: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    N: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    O: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    P: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    Q: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    R: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    S: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    T: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    U: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    V: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    W: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    X: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    Y: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    Z: {
+                        price: 360,
+                        classes: 'D',
+                        category: 'D'
+                    },
+                    GAP: {
+                        classes: 'gap-seat', // Custom class for gaps
+                        category: 'Unavailable'
+                    }
+                },
+                naming: {
+                    top: false,
+                    left: true,
+                    getLabel: function (character, row, column) {
+                    {% comment %} console.log('Row:', character, 'Column (zero-based):', column); {% endcomment %}
+                        if (character === 'GAP') {
+                            return ''; // No label for gap
+                        }
+                        return character + (column+1);
+                    }
+                },
+                click: function () {
+                    var seat = this;
+                    if (seat.status() === 'available') {
+                        $('#selected-seats').append('<li>Seat ' + seat.settings.label + ' selected</li>');
+                        $('#counter').text($('#selected-seats li').length);
+                        $('#total').text($('#selected-seats li').length * seat.data().price);
+                        $('#selected-seats-data').val(JSON.stringify($('#selected-seats li').map(function () {
+                            return $(this).text().replace('Seat ', '').replace(' selected', '');
+                        }).get()));
+                        return 'selected';
+                    } else if (seat.status() === 'selected') {
+                        $('#selected-seats li:contains("Seat ' + seat.settings.label + ' selected")').remove();
+                        $('#counter').text($('#selected-seats li').length);
+                        $('#total').text($('#selected-seats li').length * seat.data().price);
+                        $('#selected-seats-data').val(JSON.stringify($('#selected-seats li').map(function () {
+                            return $(this).text().replace('Seat ', '').replace(' selected', '');
+                        }).get()));
+                        return 'available';
+                    } else {
+                        return seat.style();
+                    }
+                }
+            });
+
+            
+            // Mark reserved seats as sold
+            reservedSeats.forEach(function (seatLabel) {
+                let rowChar = seatLabel.charAt(0); // e.g., "A"
+                let rowIndex = rowChar.charCodeAt(0) - 65; // Convert "A" to row index (0 if "A"=0)
+                let column = parseInt(seatLabel.slice(1), 10) - 2; // Convert "1" to column index (0 if starting at 0)
+                let seatId = (rowIndex + 1) + "_" + (column + 1); // Combine into "1_1" if zero-indexed
+                console.log(seatId)            
+                var seat = sc.get(seatId);
+
+                console.log(seat)
+                if (seat) {
+                    seat.status('unavailable');
+                    $(seat.node()).addClass('sold');
+                }
+            });
+            
+            // Mark gaps as unavailable
+            seatMap.forEach(function (row, rowIndex) {
+                row.split(':').forEach(function (seat, columnIndex) {
+                    if (seat === 'GAP') {
+                        sc.get([String.fromCharCode(65 + rowIndex) + (columnIndex + 1)]).status('unavailable');
+                    }
+                });
+            });
+            $('#reservation-form').on('submit', function (event) {
+                // Get the selected passenger IDs
+                var selectedPassengers = [];
+                $('input[name="passengers"]:checked').each(function () {
+                    selectedPassengers.push($(this).val());
+                });
+        
+                // Check if there are selected passengers
+                if (selectedPassengers.length === 0) {
+                    alert('Please select passengers first.');
+                    event.preventDefault(); // Prevent form submission
+                    return;
+                }
+        
+                // Check if the number of selected seats matches the number of passengers
+                if ($('#selected-seats li').length !== selectedPassengers.length) {
+                    alert('The number of selected seats must match the number of selected passengers.');
+                    event.preventDefault(); // Prevent form submission
+                    return;
+                }
+        
+                // Append selected passengers to the form data
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'passenger_ids',
+                    value: JSON.stringify(selectedPassengers)
+                }).appendTo('#reservation-form');
+            });
+        });
+    </script>
+</body>
+
+</html>

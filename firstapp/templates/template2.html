@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOK YOUR-HAPPINESS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Joan&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Joan', serif;
+        }
+
+        body {
+            background-color: #1e1f26;
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sg-title {
+            margin-bottom: 1rem;
+            color: #cd8c38;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        input[type=checkbox],
+        input[type=radio] {
+            accent-color: #cd8c38;
+        }
+
+        .upcoming-img-box {
+            position: relative;
+            height: 350px;
+            width: 100%;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .upcoming-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upcoming-title {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid #cd8c38;
+            font-weight: 500;
+            font-size: 1.25rem;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: #cd8c38;
+            border-radius: 2rem;
+            color: #1e1f26;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #92601f;
+        }
+
+        .btn-alt {
+            background-color: #1e1f26;
+            color: #cd8c38;
+            border: 1px solid #cd8c38;
+            margin-left: 1rem;
+        }
+
+        .btn-alt:hover {
+            color: #1e1f26;
+            background-color: #cd8c38;
+        }
+
+        .movies-container {
+            padding-bottom: 2rem;
+            color: #adadad;
+        }
+
+        .current-movie {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            background: rgba(205, 140, 56, 0.1);
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .current-movie:hover {
+            transform: translateY(-5px);
+        }
+
+        .cm-img-box {
+            height: 200px;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .cm-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-title {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .booking {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .price {
+            color: #cd8c38;
+            font-size: 1.2rem;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: #adadad;
+        }
+
+        .btn-l {
+            width: 100%;
+            text-align: center;
+        }
+
+        body {
+            background-color: #1e1f26;
+            display: grid;
+            grid-template-columns: 1000px;
+            justify-content: space-evenly;
+        }
+
+        .title {
+            margin-right: 3rem;
+            color: #cd8c38;
+        }
+
+        .active {
+            color: #cd8c38;
+        }
+
+        .filter,
+        .cart,
+        .help,
+        .menu {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .filter,
+        .cart,
+        .help {
+            margin-right: 1rem;
+        }
+
+        .menu {
+            margin-left: .8rem;
+        }
+
+        .filter,
+        .menu {
+            display: none;
+        }
+
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .current-movies {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .current-movie {
+            background: linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(205, 140, 56, .15));
+            padding: 1rem;
+            border-radius: .5rem;
+        }
+
+        .cm-img-box {
+            position: relative;
+            height: 150px;
+            width: auto;
+            margin-bottom: 1rem;
+            border-radius: .5rem;
+            overflow: hidden;
+        }
+
+        .movie-title {
+            color: #fff;
+            margin-bottom: .2rem;
+        }
+
+        .booking {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .price {
+            color: #cd8c38;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="main-container">
+        <div></div>
+        <div class="movies-container">
+            <div class="upcoming-img-box">
+                <img src="./logo2.jpg" alt="">
+                <!-- <h3 class="upcoming-title">Spiderman</h3> -->
+                <div class="buttons">
+                    <!-- <a href="#" class="btn">Buy Tickets</a>
+                    <a href="#" class="btn btn-alt">Add to Cart</a> -->
+                </div>
+            </div>
+            <h1>Current Available Services</h1>
+            <div class="current-movies">
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="./flight.jpg" alt="">
+                    </div>
+                    <h4 class="movie-title">FLIGHT</h4>
+                    <p>"Fly high and book with ease – your next adventure awaits!"</p>
+                    <div class="booking">
+                        <a href="#" class="btn btn-l">Book Now</a>
+                        <!-- <h4 class="price">$12</h4> -->
+                    </div>
+                </div>
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="./movie.jpg" alt="">
+                    </div>
+                    <h4 class="movie-title">MOVIE</h4>
+                    <p>"A book that changes your life is a movie waiting to be made"</p>
+                    <div class="booking">
+                        <a href="#" class="btn btn-l">Book Now</a>
+                        <!-- <h4 class="price">$15</h4> -->
+                    </div>
+                </div>
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="./bus.jpg" alt="">
+                    </div>
+                    <h4 class="movie-title">BUS</h4>
+                    <p>“Elevate your travel time with stories that transport you.”
+                    </p>
+                    <div class="booking">
+                        <a href="#" class="btn btn-l">Book Now</a>
+                        <!-- <h4 class="price">$10</h4> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+</body>
+
+</html>

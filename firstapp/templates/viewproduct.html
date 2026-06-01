@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Products</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 5px solid #ff7b54;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin: 10px 0;
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .product-info p {
+            color: #666;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .product-info .price {
+            font-weight: bold;
+            color: #ff7b54;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product-actions {
+            padding: 10px;
+            border-top: 1px solid #f0f0f0;
+            background-color: #fafafa;
+        }
+
+        .product-actions a {
+            color: #ff7b54;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .product-actions a:hover {
+            color: #333;
+        }
+
+        .product-actions .btn {
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #ff7b54;
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-actions .btn:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Find Your FAV..</h1>
+    </div>
+    <div class="product-grid">
+        {% for movie in movies %}
+        <div class="product-card">
+            <div class="product-image">
+                <img style="width: 250px; height: 250px;" src="{{ movie.movieImage.url }}" alt="{{ movie.movieImage }}">
+            </div>
+            <div class="product-info">
+                <h3>{{ movie.moviename }}</h3>
+                <h3>{{ movie.moviecategory }}</h3>
+                <p>{{ movie.aboutmovie }}</p>
+                <p><span class="price">${{ movie.ticketPrice }}</span></p>
+            </div>
+            <div class="product-actions">
+              
+                <a href="{% url 'delete_product' movie.id %}" class="btn">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <p>No More products available...!</p>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Booking Detail</title>
+</head>
+<body>
+    <h1>Flight Booking Details</h1>
+    <p><strong>Flight Schedule:</strong> {{ booking.schedule }}</p>
+    <p><strong>Passenger:</strong> {{ booking.passenger.username }}</p>
+    <p><strong>Seat Number:</strong> {{ booking.seat_number }}</p>
+    <a href="{% url 'flight_booking_list' %}">Back to Booking List</a>
+</body>
+</html>

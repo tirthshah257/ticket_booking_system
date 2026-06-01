@@ -1,0 +1,90 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets3/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/templatemo-hexashop.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/lightbox.css' %}">
+</head>
+
+<body>
+    {% for movie in movies %}
+        <li><a href="{% url 'select_theater' movie.id %}">{{ movie.name }}</a></li>
+        {% endfor %}
+        
+    {% if page_obj%}
+    <div class="container">
+        
+
+        <!-- Movie Grid -->
+        <div class="row">
+            {% for movie in page_obj %}
+                <div class="col-md-4 mb-4">
+                    <a href="{% url 'select_theater' movie.id %}">
+                    <div class="card">
+                        <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title" style="text-align: center;">{{ movie.name }}</h5>
+                        </div></a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No movies available.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'assets3/js/jquery-2.1.0.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'assets3/js/popper.js' %}"></script>
+    <script src="{% static 'assets3/js/bootstrap.min.js' %}"></script>
+    <!-- Plugins -->
+    <script src="{% static 'assets3/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets3/js/accordions.js' %}"></script>
+    <script src="{% static 'assets3/js/datepicker.js' %}"></script>
+    <script src="{% static 'assets3/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'assets3/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'assets3/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'assets3/js/imgfix.min.js' %}"></script>
+    <script src="{% static 'assets3/js/slick.js' %}"></script>
+    <script src="{% static 'assets3/js/lightbox.js' %}"></script>
+    <script src="{% static 'assets3/js/isotope.js' %}"></script>
+    <!-- Global Init -->
+    <script src="{% static 'assets3/js/custom.js' %}"></script>
+</body>
+
+</html>
+{% endblock %}

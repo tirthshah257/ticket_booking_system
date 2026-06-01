@@ -1,0 +1,298 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Seat Chart</title>
+    <style>
+        /* Styling for the gap seats */
+.gap-seat {
+    background-color: transparent;
+    border: none;
+    cursor: not-allowed;
+}
+
+        /* Container for the seat chart */
+div.seatCharts-container {
+    min-width: 700px; /* Ensure enough width for the seat map */
+}
+
+/* Style for each seat cell */
+div.seatCharts-cell {
+    height: 20px;
+    width: 20px;
+    margin: 3px;
+    float: left;
+    text-align: center; /* Center text horizontally */
+    outline: none;
+    font-size: 11px;
+    line-height: 20px; /* Adjusted to match the height */
+    color: blue;
+}
+
+/* Base style for all seat elements */
+div.seatCharts-seat {
+    background-color: white;
+    color: red;
+    border-radius: 5px; /* Rounded corners */
+    cursor: default;
+    display: inline-block; /* Ensure inline-block for alignment */
+    text-align: center; /* Center text horizontally */
+    line-height: 20px; /* Ensure vertical centering */
+}
+
+/* Focus state for seat elements */
+div.seatCharts-seat:focus {
+    outline: none;
+    border: 2px solid red; /* Border for focus state */
+}
+
+/* Style for available seats */
+div.seatCharts-seat.available {
+    background-color: white;
+    color: red;
+    border: 2px solid rgba(255, 0, 0, 0.8); /* Red border with 50% opacity */
+}
+
+/* Style for selected seats */
+div.seatCharts-seat.selected {
+    background-color: red;
+    color: white; /* Text color for selected seats */
+}
+
+/* Style for focused seats */
+div.seatCharts-seat.focused {
+    background-color: red;
+    color: white; /* Text color for focused seats */
+}
+
+/* Style for unavailable seats */
+div.seatCharts-seat.unavailable {
+    background-color: grey;
+    cursor: not-allowed; /* Not-allowed cursor for unavailable seats */
+}
+
+/* Style for space (non-seats) */
+div.seatCharts-space {
+    background-color: white;
+}
+
+/* Style for each row of seats */
+div.seatCharts-row {
+    height: 50px;
+}
+
+/* Clear floats after each row */
+div.seatCharts-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* Center align seat map */
+#seat-map {
+    text-align: center;
+    margin-left: 200px; /* Center horizontally */
+}
+
+/* Style for booking details section */
+.booking-details {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Style for theater screen */
+.theater-screen {
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #9efde7;
+    color: green;
+    text-align: center;
+    width: 60%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+div.seatCharts-seat.sold {
+    background-color: rgba(0, 0, 0, 0.3); /* Orange color for sold seats */
+    color: white; /* White text color */
+    cursor:none;
+    border: none;
+}
+
+    </style>
+    <!-- Include jQuery before jQuery Seat Charts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'jquery.seat-charts.js' %}"></script>
+</head>
+
+<body>
+    <div class="theater-screen">Screen</div>
+
+    <div id="seat-map" class="seatCharts-container" >
+        <!-- The seats will be dynamically generated here -->
+    </div>
+
+    <form id="reservation-form" action="{% url 'confirm_reservation' movie_id theater_id time_id %}?date={{ selected_date|date:'M. d, Y' }}" method="POST">
+        {% csrf_token %}
+
+        <input type="hidden" id="selected-seats-data" name="seats">
+
+        <div class="booking-details">
+            <h2>Booking Details</h2>
+            <h3>Selected Seats (<span id="counter">0</span>):</h3>
+            <ul id="selected-seats"></ul>
+            Total: <b>$<span id="total" name="total">0</span></b>
+            <button type="submit" class="checkout-button">Checkout &raquo;</button>
+        </div>
+    </form>
+    
+    <script>
+        $(document).ready(function () {
+            var seatMap = [
+                'A:A:A:A:A:A:___:A:A:A:A:A:A:A:A:A:A:A:A:A:A:___:A:A:A:A:A:A:A',
+                'B:B:B:B:B:B:___:B:B:B:B:B:B:B:B:B:B:B:B:B:B:___:B:B:B:B:B:B:B',
+                '__:__:__:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C:C',
+                '__:__:__:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D:D',
+                '__:__:__:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E:E',
+                '__:__:__:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F:F',
+                '__:__:__:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G:G',
+                '__:__:__:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H:H',
+                'I:I:I:I:I:I:I:__:__:I:I:I:I:I:I:I:I:I:I:I:I:I:I:I:__:__:I:I:I:I:I:I:I:I:I:I:I:I:I',
+                '__:__:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J:J'
+            ];
+        
+            var reservedSeats = {{ reserved_seats|safe }}; // From backend
+
+            {% comment %} console.log(reservedSeats) {% endcomment %}
+
+    var sc = $('#seat-map').seatCharts({
+        map: seatMap,
+        seats: {
+            A: {
+                price: 180,
+                classes: 'A',
+                category: 'A'
+            },
+            B: {
+                price: 180,
+                classes: 'A',
+                category: 'A'
+            },
+            C: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            D: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            E: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            F: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            G: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            H: {
+                price: 240,
+                classes: 'C',
+                category: 'C'
+            },
+            I: {
+                price: 360,
+                classes: 'D',
+                category: 'D'
+            },
+            J: {
+                price: 360,
+                classes: 'D',
+                category: 'D'
+            },
+            GAP: {
+                classes: 'gap-seat',  // Custom class for gaps
+                category: 'Unavailable'
+            }
+        },
+        naming: {
+            top: false,
+            left: true,
+            getLabel: function (character, row, column) {
+                if (character === 'GAP') {
+                    return ''; // No label for gap
+                }
+                return character + (column + 1);
+            }
+        },
+        click: function () {
+            var seat = this;
+            if (seat.status() === 'available') {
+                $('#selected-seats').append('<li>Seat ' + seat.settings.label + ' selected</li>');
+                $('#counter').text($('#selected-seats li').length);
+                $('#total').text($('#selected-seats li').length * seat.data().price);
+                $('#selected-seats-data').val(JSON.stringify($('#selected-seats li').map(function () {
+                    return $(this).text().replace('Seat ', '').replace(' selected', '');
+                }).get()));
+                return 'selected';
+            } else if (seat.status() === 'selected') {
+                $('#selected-seats li:contains("Seat ' + seat.settings.label + ' selected")').remove();
+                $('#counter').text($('#selected-seats li').length);
+                $('#total').text($('#selected-seats li').length * seat.data().price);
+                $('#selected-seats-data').val(JSON.stringify($('#selected-seats li').map(function () {
+                    return $(this).text().replace('Seat ', '').replace(' selected', '');
+                }).get()));
+                return 'available';
+            } else {
+                return seat.style();
+            }
+        }
+    });
+
+    {% comment %} console.log(sc); {% endcomment %}
+
+    // Mark reserved seats as sold
+    reservedSeats.forEach(function (seatLabel) {
+        // Convert seatLabel like "J20" to the correct ID format "row_column"
+        let rowChar = seatLabel.charAt(0); // e.g., "J"
+        let rowIndex = rowChar.charCodeAt(0) - 65; // Convert "J" to row index (9 if "A"=0)
+        let column = parseInt(seatLabel.slice(1), 10) - 1; // Convert "20" to column index (19 if starting at 0)
+        let seatId = (rowIndex + 1) + "_" + (column + 1); // Combine into "10_20" if zero-indexed
+    
+        {% comment %} console.log('Checking seat:', seatId); // Log the correct seat ID {% endcomment %}
+        var seat = sc.get(seatId);
+        if (seat) {
+            seat.status('unavailable');
+            $(seat.node()).addClass('sold');
+            {% comment %} console.log('Added sold class to:', seatId); // Log success {% endcomment %}
+        } else {
+            {% comment %} console.log('Seat not found:', seatId); // Log if seat is not found {% endcomment %}
+        }
+    });
+    
+     // Mark gaps as unavailable
+    seatMap.forEach(function (row, rowIndex) {
+        row.split(':').forEach(function (seat, columnIndex) {
+            if (seat === 'GAP') {
+                sc.get([String.fromCharCode(65 + rowIndex) + (columnIndex + 1)]).status('unavailable');
+            }
+        });
+    });
+});
+    </script>
+    
+</body>
+
+</html>

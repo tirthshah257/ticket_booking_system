@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>BOOK YOUR-HAPPINESS</title>
+    <link rel="stylesheet" href="{% static 'fontawesome-5.5/css/all.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'slick/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'slick/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tooplate-infinite-loop.css' %}" />
+  </head>
+  <body>
+    <section id="infinite" class="text-white tm-font-big tm-parallax">
+      <nav class="navbar navbar-expand-md tm-navbar" id="tmNav">
+        <div class="container">
+          <div class="tm-next">
+            <a href="#" class="navbar-brand">BOOK YOUR-HAPPINESS</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars navbar-toggler-icon"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="#infinite">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="#whatwedo">What We Do</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="#testimonials">Testimonials</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="#gallery">Gallery</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="#contact">Contact</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'login2' %}">Login</a>
+              </li>
+              {% comment %} <li class="login-link">
+                <a href="{% url 'login2' %}">Login </a>
+              </li> {% endcomment %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
+      <div class="text-center tm-hero-text-container">
+        <div class="tm-hero-text-container-inner">
+          <h2 class="tm-hero-title">BOOK YOUR-HAPPINESS</h2>
+          <p class="tm-hero-subtitle">
+           <h3> THIS IS A ONLINE TICKET BOOKING PLATFORM</h3>
+          </p>
+        </div>
+      </div>
+      <div class="tm-next tm-intro-next">
+        <a href="#whatwedo" class="text-center tm-down-arrow-link">
+          <i class="fas fa-2x fa-arrow-down tm-down-arrow"></i>
+        </a>
+      </div>
+    </section>
+    <section id="whatwedo" class="tm-section-pad-top">
+      <div class="container">
+        <div class="row tm-content-box">
+          <div class="col-lg-12 col-xl-12">
+            <div class="tm-intro-text-container">
+              <h2 class="tm-text-primary mb-4 tm-section-title">What We Do</h2>
+              <p class="mb-4 tm-intro-text">
+                Explore the world with US !!! Book your next adventure hassle-free with our convenient ticket booking service. Whether you're planning a getaway or a business trip, find the best deals on flights, trains, and buses to your desired destination. Start your journey today and experience seamless travel planning at your fingertips. </p>
+            </div>
+          </div>
+        </div>
+        <div class="row tm-content-box">
+          <div class="col-lg-1">
+            <i class="far fa-3x fa-chart-bar text-center tm-icon"></i>
+          </div>
+          <div class="col-lg-5">
+            <div class="tm-intro-text-container">
+              <h2 class="tm-text-primary mb-4">Simplified Booking Experience</h2>
+              <p class="mb-4 tm-intro-text">
+                We provide an intuitive interface that makes finding and booking tickets a breeze. Whether you’re looking for concert tickets, sports events, theater shows, or conferences, our system offers a straightforward booking process with minimal clicks.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-1">
+            <i class="far fa-3x fa-comment-alt text-center tm-icon"></i>
+          </div>
+          <div class="col-lg-5">
+            <div class="tm-intro-text-container">
+              <h2 class="tm-text-primary mb-4">Fast Support</h2>
+              <p class="mb-4 tm-intro-text">
+                Need quick help? Use our live chat for immediate assistance. For detailed support, visit our FAQ page where you’ll find answers to common questions. If you still need assistance, our support team is ready to help you resolve any issues promptly.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row tm-content-box">
+          <div class="col-lg-1">
+            <i class="fas fa-3x fa-fingerprint text-center tm-icon"></i>
+          </div>
+          <div class="col-lg-5">
+            <div class="tm-intro-text-container">
+              <h2 class="tm-text-primary mb-4">Top Security</h2>
+              <p class="mb-4 tm-intro-text">
+                Your safety is our top priority. We use advanced encryption to protect your personal and payment information. Regular security updates and monitoring ensure a safe booking experience. If you have any concerns about your account’s security, please reach out to us immediately.
+              </p>
+              <div class="tm-continue">
+                <!--<a href="#testimonials" class="tm-intro-text tm-btn-primary">Learn More</a>-->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-1">
+            <i class="fas fa-3x fa-users text-center tm-icon"></i>
+          </div>
+          <div class="col-lg-5">
+            <div class="tm-intro-text-container">
+              <h2 class="tm-text-primary mb-4">Exceptional Service</h2>
+              <p class="mb-4 tm-intro-text">
+                We deliver a hassle-free ticket booking experience with intuitive tools and dedicated support, ensuring you get prompt assistance and peace of mind throughout the process. 
+              </p>
+              <div class="tm-continue">
+                <a href="#testimonials" class="tm-intro-text tm-btn-primary">NEXT</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="testimonials" class="tm-section-pad-top tm-parallax-2">
+      <div class="container tm-testimonials-content">
+        <div class="row">
+          <div class="col-lg-12 tm-content-box">
+            <h2 class="text-white text-center mb-4 tm-section-title">Testimonials</h2>
+            <p class="mx-auto tm-section-desc text-center">
+              <center><h1>What Our Customers Are Saying</h1></center>
+            </p>
+            <div class="mx-auto tm-gallery-container tm-gallery-container-2">
+              <div class="tm-testimonials-carousel">
+                <figure class="tm-testimonial-item">
+                  <img src="{% static 'img/testimonial-img-01.jpg' %}" alt="Image" class="img-fluid mx-auto">
+                  <blockquote>“The booking process was incredibly smooth and user-friendly. I was able to secure my tickets in just a few clicks. Excellent service!”</blockquote>
+                  <figcaption>Vinisha Patel</figcaption>
+                </figure>
+                <figure class="tm-testimonial-item">
+                  <img src="{% static 'img/testimonial-img-02.jpg' %}" alt="Image" class="img-fluid mx-auto">
+                  <blockquote>“I had a fantastic experience with this ticket booking system. The customer support was responsive and resolved my issue quickly. Highly recommended!”
+                  </blockquote>
+                  <figcaption>Jainesh Shah</figcaption>
+                </figure>
+                <figure class="tm-testimonial-item">
+                  <img src="{% static 'img/testimonial-img-03.jpg' %}" alt="Image" class="img-fluid mx-auto">
+                  <blockquote>“From finding the right event to receiving my tickets, everything was seamless. I’ll definitely use this service again for future bookings.”
+                  </blockquote>
+                  <figcaption>Bhavin Vasita</figcaption>
+                </figure>
+                <figure class="tm-testimonial-item">
+                  <img src="{% static 'img/testimonial-img-04.jpg' %}" alt="Image" class="img-fluid mx-auto">
+                  <blockquote>“This system made planning our trip a breeze. The interface is intuitive, and the confirmation emails kept me updated every step of the way.”
+                  </blockquote>
+                  <figcaption>Yashvi Jadhav</figcaption>
+                </figure>
+                <figure class="tm-testimonial-item">
+                  <img src="{% static 'img/testimonial-img-02.jpg' %}" alt="Image" class="img-fluid mx-auto">
+                  <blockquote>“A fantastic booking experience! The customer support team was quick to address my questions, and the entire process was hassle-free.”
+                  </blockquote>
+                  <figcaption>Tirth Shah</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tm-bg-overlay"></div>
+    </section>
+    <section id="gallery" class="tm-section-pad-top">
+      <div class="container tm-container-gallery">
+        <div class="row">
+          <div class="text-center col-12">
+            <h2 class="tm-text-primary tm-section-title mb-4">Gallery</h2>
+            <p class="mx-auto tm-section-desc">
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="mx-auto tm-gallery-container">
+              <div class="grid tm-gallery">
+                <a href="{% static 'img/gallery-bus.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/gallery-bus.jpg' %}" alt="Image 1" class="img-fluid">
+                    <!--<figcaption>
+                      <h2><i>Physical Health <span>Exercise!</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/bus2.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/bus2.jpg' %}" alt="Image 2" class="img-fluid">
+                    <!--<figcaption>
+                      <h2><i>Rain on Glass <span>Second Image</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/flight.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/flight.jpg' %}" alt="Image 3" class="img-fluid">
+                    <!--<figcaption>
+                      <h2><i><span>Sea View</span> Mega City</i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/flightt.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/flightt.jpg' %}" alt="Image 4" class="img-fluid">
+                   <!-- <figcaption>
+                      <h2><i>Dream Girl <span>Thoughts</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/movie.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/movie.jpg' %}" alt="Image 5" class="img-fluid">
+                   <!-- <figcaption>
+                      <h2><i><span>Workstation</span> Offices</i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/gallery-img-06.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/gallery-tn-06.jpg' %}" alt="Image 6" class="img-fluid">
+                   <!-- <figcaption>
+                      <h2><i>Just Above <span>The City</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+               <!-- <a href="{% static 'img/bus.jpg' %}">-->
+                <a href="{% static 'img/bus2.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/bus2.jpg' %}" alt="Image 6" class="img-fluid">
+                   <!-- <figcaption>
+                      <h2><i>Just Above <span>The City</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+                <a href="{% static 'img/movie2.jpg' %}">
+                  <figure class="effect-honey tm-gallery-item">
+                    <img src="{% static 'img/movie2.jpg' %}" alt="Image 8" class="img-fluid">
+                   <!-- <figcaption>
+                      <h2><i>Repeated <span>Image Spot</span></i></h2>
+                    </figcaption>-->
+                  </figure>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- Contact -->
+<section id="contact" class="tm-section-pad-top tm-parallax-2">
+  
+  <div class="container tm-container-contact">
+    
+    <div class="row">
+        
+        <div class="text-center col-12">
+            <h2 class="tm-section-title mb-4">Contact Us</h2>
+            <p class="mb-5">
+              <h1> We're here to help with any booking inquiries or issues </h1>  
+              Reach out to our dedicated support team at <u> theyashjadav110 </u> or <u> +91-94260 03435 </u>, and we'll provide prompt and personalized assistance to ensure your experience is exceptional.          
+            </p><br>
+        </div>
+        
+        <div class="col-sm-12 col-md-6">
+          <form action="" method="get">
+            <input id="name" name="name" type="text" placeholder="Your Name" class="tm-input" required />
+            <input id="email" name="email" type="email" placeholder="Your Email" class="tm-input" required />
+            <textarea id="message" name="message" rows="8" placeholder="Message" class="tm-input" required></textarea>
+            <button type="submit" class="btn tm-btn-submit">Submit</button>
+          </form>
+        </div>
+        
+        <div class="col-sm-12 col-md-6">
+
+            <div class="contact-item">
+              <a rel="nofollow" href="https://www.whatsappweb.com/contact" class="item-link">
+                  <i class="far fa-2x fa-comment mr-4"></i>
+                  <span class="mb-0">Chat Online</span>
+              </a>              
+            </div>
+            
+            <div class="contact-item">
+              <a rel="nofollow" href="mailto:theyashjadav110@gmail.com" class="item-link">
+                  <i class="far fa-2x fa-envelope mr-4"></i>
+                  <span class="mb-0">theyashjadav110@gmail.com</span>
+              </a>              
+            </div>
+            
+            {% comment %} <div class="contact-item">
+              <a rel="nofollow" href="https://www.google.com/maps" class="item-link">
+                  <i class="fas fa-2x fa-map-marker-alt mr-4"></i>
+                  <span class="mb-0">Our Location</span>
+              </a>              
+            </div> {% endcomment %}
+            
+            <div class="contact-item">
+              <a rel="nofollow" href="tel:94260 03435" class="item-link">
+                  <i class="fas fa-2x fa-phone-square mr-4"></i>
+                  <span class="mb-0">94260 03435</span>
+              </a>              
+            </div>
+            
+            <div class="contact-item">&nbsp;</div>
+        
+        </div>
+        
+        
+    </div><!-- row ending -->
+    
+  </div>
+
+  <footer class="text-center small tm-footer">
+    <p class="mb-0">
+    Copyright &copy; 2024 BOOK YOUR-HAPPINESS
+    <!-- <a rel="nofollow" href="https://www.tooplate.com" title="HTML templates">Designed by TOOPLATE</a></p> -->
+  </footer>
+
+</section>
+
+<script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>     
+<script src="{% static 'slick/slick.min.js' %}"></script>
+<script src="{% static 'magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/easing.min.js' %}"></script>
+<script src="{% static 'js/jquery.singlePageNav.min.js' %}"></script>     
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+
+  function getOffSet(){
+    var _offset = 450;
+    var windowHeight = window.innerHeight;
+
+    if(windowHeight > 500) {
+      _offset = 400;
+    } 
+    if(windowHeight > 680) {
+      _offset = 300
+    }
+    if(windowHeight > 830) {
+      _offset = 210;
+    }
+
+    return _offset;
+  }
+
+  function setParallaxPosition($doc, multiplier, $object){
+    var offset = getOffSet();
+    var from_top = $doc.scrollTop(),
+      bg_css = 'center ' +(multiplier * from_top - offset) + 'px';
+    $object.css({"background-position" : bg_css });
+  }
+
+  // Parallax function
+  // Adapted based on https://codepen.io/roborich/pen/wpAsm        
+  var background_image_parallax = function($object, multiplier, forceSet){
+    multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
+    multiplier = 1 - multiplier;
+    var $doc = $(document);
+    // $object.css({"background-attatchment" : "fixed"});
+
+    if(forceSet) {
+      setParallaxPosition($doc, multiplier, $object);
+    } else {
+      $(window).scroll(function(){          
+        setParallaxPosition($doc, multiplier, $object);
+      });
+    }
+  };
+
+  var background_image_parallax_2 = function($object, multiplier){
+    multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
+    multiplier = 1 - multiplier;
+    var $doc = $(document);
+    $object.css({"background-attachment" : "fixed"});
+    
+    $(window).scroll(function(){
+      if($(window).width() > 768) {
+        var firstTop = $object.offset().top,
+            pos = $(window).scrollTop(),
+            yPos = Math.round((multiplier * (firstTop - pos)) - 186);              
+
+        var bg_css = 'center ' + yPos + 'px';
+
+        $object.css({"background-position" : bg_css });
+      } else {
+        $object.css({"background-position" : "center" });
+      }
+    });
+  };
+  
+  $(function(){
+    // Hero Section - Background Parallax
+    background_image_parallax($(".tm-parallax"), 0.30, false);
+    background_image_parallax_2($("#contact"), 0.80);   
+    background_image_parallax_2($("#testimonials"), 0.80);   
+    
+    // Handle window resize
+    window.addEventListener('resize', function(){
+      background_image_parallax($(".tm-parallax"), 0.30, true);
+    }, true);
+
+    // Detect window scroll and update navbar
+    $(window).scroll(function(e){          
+      if($(document).scrollTop() > 120) {
+        $('.tm-navbar').addClass("scroll");
+      } else {
+        $('.tm-navbar').removeClass("scroll");
+      }
+    });
+    
+    // Close mobile menu after click 
+    $('#tmNav a').on('click', function(){
+      $('.navbar-collapse').removeClass('show'); 
+    })
+
+    // Scroll to corresponding section with animation
+    $('#tmNav').singlePageNav({
+      'easing': 'easeInOutExpo',
+      'speed': 600
+    });        
+    
+    // Add smooth scrolling to all links
+    // https://www.w3schools.com/howto/howto_css_smooth_scroll.asp
+    $("a").on('click', function(event) {
+      if (this.hash !== "") {
+        event.preventDefault();
+        var hash = this.hash;
+
+        $('html, body').animate({
+          scrollTop: $(hash).offset().top
+        }, 600, 'easeInOutExpo', function(){
+          window.location.hash = hash;
+        });
+      } // End if
+    });
+
+    // Pop up
+    $('.tm-gallery').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: { enabled: true }
+    });
+
+    $('.tm-testimonials-carousel').slick({
+      dots: true,
+      prevArrow: false,
+      nextArrow: false,
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2
+          }
+        }, 
+        {
+          breakpoint: 480,
+          settings: {
+              slidesToShow: 1
+          }                 
+        }
+      ]
+    });
+
+    // Gallery
+    $('.tm-gallery').slick({
+      dots: true,
+      infinite: false,
+      slidesToShow: 5,
+      slidesToScroll: 2,
+      responsive: [
+      {
+        breakpoint: 1199,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 991,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+    });
+  });
+</script>
+</body>
+</html>

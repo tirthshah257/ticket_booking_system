@@ -1,0 +1,280 @@
+{% extends "daashboard2.html" %}
+{% load static %}
+
+{% block AdminBody %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Theater List</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for theater in theaters %}
+                <tr>
+                  <td>{{ theater.id }}</td>
+                  <td>{{ theater.name }}</td>
+                  <td>{{ theater.addr }}</td>
+                  <td>
+                    <a href="{% url 'delete_theater' theater.id %}" class="btn btn-danger btn-sm">Delete</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4">No theaters available</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Screen List</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Theater</th>
+                  <th>Screen Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for screen in screens %}
+                <tr>
+                  <td>{{ screen.id }}</td>
+                  <td>{{ screen.theater.name }}</td>
+                  <td>{{ screen.name }}</td>
+                  <td>
+                    <a href="{% url 'delete_screen' screen.id %}" class="btn btn-danger btn-sm">Delete</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4">No screens available</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Movie List</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Movie Name</th>
+                  <th>Duration</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for movie in movies %}
+                <tr>
+                  <td>{{ movie.id }}</td>
+                  <td>{{ movie.name }}</td>
+                  <td>{{ movie.minutes }}</td>
+                  <td>
+                    <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger btn-sm">Delete</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6">No movies available</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Movie Categories</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for category in categories %}
+                  <tr>
+                    <td>{{ category.cat_id }}</td>
+                    <td>{{ category.cat_name }}</td>
+                    <td>
+                        <a href="{% url 'delete_category' category.cat_id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="3">No categories available</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Movie Timings</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Engagement</th>
+                    <th>Timing</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for timing in timings %}
+                  <tr>
+                    <td>{{ timing.id }}</td>
+                    <td>{{ timing.engagement.movie.name }} - {{ timing.engagement.theater.name}}</td>
+                    <td>{{ timing.timing }}</td>
+                    <td>
+                      <a href="{% url 'delete_movie_timing' timing.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="4">No timings available</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Engagement List</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Theater</th>
+                    <th>Screen</th>
+                    <th>Movie</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for engagement in engagements %}
+                  <tr>
+                    <td>{{ engagement.id }}</td>
+                    <td>{{ engagement.theater.name }}</td>
+                    <td>{{ engagement.screen.name }}</td>
+                    <td>{{ engagement.movie.name }}</td>
+                    <td>{{ engagement.start_date }}</td>
+                    <td>{{ engagement.end_date }}</td>
+                    <td>
+                      <a href="{% url 'delete_engagement' engagement.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="7">No engagements available</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Reservation List</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Engagement</th>
+                    <th>Seat Label</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for reservation in reservations %}
+                  <tr>
+                    <td>{{ reservation.id }}</td>
+                    <td>{{ reservation.user }}</td>
+                    <td>{{ reservation.engagement.movie.name }}</td>
+                    <td>{{ reservation.seat_label }}</td>
+                    <td>{{ reservation.date }}</td>
+                    <td>{{ reservation.time.timing }}</td>
+                    <td>{{ reservation.seat_price }}</td>
+                    <td>
+                      <a href="{% url 'delete_reservation' reservation.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8">No reservations available</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

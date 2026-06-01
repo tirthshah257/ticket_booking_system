@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #ff7b54;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 123, 84, 0.5);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-color: #fff;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"%3E%3Cpolygon points="0,0 10,0 5,10" fill="%23777"/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px;
+        }
+
+        .form-group select option {
+            color: #555;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: linear-gradient(to right, #ff7b54, #ff9a3d);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(to right, #ff9a3d, #ff7b54);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Add Product</h2>
+        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}   
+            <div class="form-group">
+                <label for="moviename">Movie Name</label>
+                <input type="text" id="moviename" name="moviename" required>
+            </div>
+           <div class="form-group">
+                <label for="aboutmovie">About Movie</label>
+                <textarea id="aboutmovie" name="aboutmovie" required></textarea>
+            </div> 
+            <div class="form-group">
+                <label for="ticketPrice">Price</label>
+                <input type="number" id="ticketPrice" name="ticketPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="moviecategory">Category</label>
+                <select id="moviecategory" name="moviecategory" required>
+                    <option value="">Select Category</option>
+                    <option value="Romantic">Romantic</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Action">Action</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="crime">Crime</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="movieImage">Image URL</label>
+                <input type="file" id="movieImage" name="movieImage" required>
+            </div>
+            <button type="submit" class="btn-submit">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

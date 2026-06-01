@@ -1,0 +1,89 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="name">Theater Name:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Add Theater</button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="theater">Select Theater:</label>
+    <select id="theater" name="theater" required>
+        {% for theater in theaters %}
+            <option value="{{ theater.id }}">{{ theater.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="name">Screen Name:</label>
+    <input type="text" id="name" name="name">
+
+    <button type="submit">Add Screen</button>
+</form>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="name">Movie Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="image">Movie Image:</label>
+    <input type="file" id="image" name="image">
+
+    <label for="minutes">Duration (minutes):</label>
+    <input type="number" id="minutes" name="minutes" required>
+
+    <label for="cat">Category:</label>
+    <select id="cat" name="cat" required>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.cat_name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Add Movie</button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="theater">Select Theater:</label>
+    <select id="theater" name="theater" required>
+        {% for theater in theaters %}
+            <option value="{{ theater.id }}">{{ theater.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="screen">Select Screen:</label>
+    <select id="screen" name="screen" required>
+        {% for screen in screens %}
+            <option value="{{ screen.id }}">{{ screen.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="movie">Select Movie:</label>
+    <select id="movie" name="movie" required>
+        {% for movie in movies %}
+            <option value="{{ movie.id }}">{{ movie.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" required>
+
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" required>
+
+    <button type="submit">Add Engagement</button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="engagement">Select Engagement:</label>
+    <select id="engagement" name="engagement" required>
+        {% for engagement in engagements %}
+            <option value="{{ engagement.id }}">{{ engagement }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="timing">Movie Timing:</label>
+    <input type="text" id="timing" name="timing" required>
+
+    <button type="submit">Add Movie Timing</button>
+</form>

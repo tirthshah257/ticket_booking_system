@@ -1,0 +1,25 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+      <section class="content mt-10">
+         <div class="container">
+            <div class="row">
+               {% for booking in bookings %}
+               <div class="col-md-3 mb-4"> <!-- 4 columns per row -->
+                  <div class="card" style="width: 100%;">
+                     <div class="card-body">
+                        <h5 class="card-title">{{ booking.route.bus.bus_number }}</h5>
+                        <h6 class="card-subtitle mb-2 "><strong>From :</strong> {{ booking.route.start_point.location_name }}
+                           <strong> To : </strong> {{ booking.route.end_point.location_name }}</h6>
+                        {% if user %}
+                        <a href="{% url 'delete_Bus_booking' booking.busbooking_id %}" class="btn btn-danger">Delete</a>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+      </section>
+   {% endblock %}

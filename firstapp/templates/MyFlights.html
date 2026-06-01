@@ -1,0 +1,131 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boarding Pass</title>
+    <link rel="stylesheet" href="{% static 'css/boarding_pass.css' %}">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.box').forEach(box => {
+                // Retrieve the departure time from the DOM
+                const departureTimeStr = box.querySelector('p').textContent.trim();
+                const boardingTimeElement = box.querySelector('.boarding-time');
+        
+                if (!departureTimeStr || !boardingTimeElement) {
+                    console.error('Departure time or boarding-time element not found for box:', box);
+                    return;
+                }
+        
+                try {
+                    // Parse the departure time
+                    const departureTime = parseCustomDate(departureTimeStr);
+        
+                    if (!departureTime) {
+                        throw new Error('Failed to parse departure time');
+                    }
+        
+                    // Calculate boarding time (1 hour before departure)
+                    const boardingTime = new Date(departureTime.getTime() - 60 * 60 * 1000);
+        
+                    // Format the boarding time for display
+                    const options = { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short', year: 'numeric' };
+                    const boardingTimeStr = boardingTime.toLocaleDateString('en-US', options) ;
+        
+                    // Update the boarding time in the DOM
+                    boardingTimeElement.textContent = boardingTimeStr;
+                } catch (error) {
+                    console.error('Failed to process departure time:', departureTimeStr, error);
+                }
+            });
+        
+            function parseCustomDate(dateStr) {
+                // Define month mapping
+                const monthMap = {
+                    'Jan.': 'January', 'Feb.': 'February', 'Mar.': 'March', 'Apr.': 'April', 'May': 'May', 'Jun.': 'June',
+                    'Jul.': 'July', 'Aug.': 'August', 'Sep.': 'September', 'Oct.': 'October', 'Nov.': 'November', 'Dec.': 'December'
+                };
+            
+                // Use a regular expression to match the date format with correct period matching
+                const regex = /(\w+.) (\d+), (\d+), (\d+):(\d+) (a\.m\.|p\.m\.)/i;
+                const match = dateStr.match(regex);
+            
+                if (!match) {
+                    console.error('Date string format is incorrect:', dateStr);
+                    return null;
+                }
+            
+                const [ , monthAbbr, day, year, hours, minutes, period] = match;
+                const month = monthMap[monthAbbr];
+                let adjustedHours = parseInt(hours, 10);
+            
+                // Adjust hours based on AM/PM
+                if (period === 'p.m.' && adjustedHours < 12) {
+                    adjustedHours += 12;
+                } else if (period === 'a.m.' && adjustedHours === 12) {
+                    adjustedHours = 0;
+                }
+            
+                // Construct the date string
+                const formattedDateStr = `${month} ${day}, ${year} ${adjustedHours}:${minutes}:00`;
+                const date = new Date(formattedDateStr);
+            
+                return isNaN(date.getTime()) ? null : date;
+            }
+            
+        });
+          
+    </script> <!-- Include the JavaScript file -->
+</head>
+<body>
+
+    {% if bookings %}
+    {% for booking in bookings %}
+    <div class="box" data-departure="{{ booking.schedule.departure_time }}"> 
+        <p style="display: none;">{{ booking.schedule.departure_time }}</p>
+        <p class="boardingtime"></p>
+        <form action="{% url 'flight_booking_delete' booking.booking_id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="trash-button">🗑️</button> <!-- Trash button added here -->
+        </form>
+        <div class="ticket">
+          <span class="airline">{{ booking.schedule.flight.airline }}</span>
+          <span class="airline airlineslip">{{ booking.schedule.flight.airline }}</span>
+          <span class="boarding">Boarding pass</span>
+          <div class="content">
+            <span class="jfk">{{ booking.schedule.departure_airport.code }}</span> <!-- Updated airport code -->
+            <span class="plane"><!-- Plane SVG remains unchanged --></span>
+            <span class="sfo">{{ booking.schedule.arrival_airport.code }}</span> <!-- Updated destination code -->
+            
+            <span class="jfk jfkslip">{{ booking.schedule.departure_airport.code }}</span> <!-- Slip copy updated -->
+            <span class="plane planeslip"><!-- Plane SVG for slip remains unchanged --></span>
+            <span class="sfo sfoslip">{{ booking.schedule.arrival_airport.code }}</span> <!-- Slip destination updated -->
+            
+            <div class="sub-content">
+              <span class="watermark">{{ booking.schedule.flight.airline }}</span>
+              <span class="name">PASSENGER NAME<br><span>{{ booking.passenger.firstname }}, {{ booking.passenger.lastname }}</span></span> <!-- Updated name -->
+              <span class="flight">FLIGHT N&deg;<br><span>{{ booking.schedule.flight.flight_number }}</span></span> <!-- Updated flight number -->
+              <span class="gate">GATE<br><span>22C</span></span> <!-- Updated gate -->
+              <span class="seat">SEAT<br><span>{{ booking.seat_number }}</span></span> <!-- Updated seat -->
+              <span class="boardingtime">BOARDING TIME<br><span class="boarding-time">Loading...</span></span> <!-- Boarding time will be updated by JavaScript -->
+              <span class="flight flightslip">FLIGHT N&deg;<br><span>{{ booking.schedule.flight.flight_number }}</span></span> <!-- Slip flight number -->
+              <span class="seat seatslip">SEAT<br><span>{{ booking.seat_number }}</span></span> <!-- Slip seat -->
+              <span class="name nameslip">PASSENGER NAME<br><span>{{ booking.passenger.firstname }}, {{ booking.passenger.lastname }}</span></span> <!-- Slip name -->
+            </div>
+          </div>
+          <div class="barcode"></div>
+          <div class="barcode slip"></div>
+
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %} 
+
+</body>
+</html>
+{% endblock %}

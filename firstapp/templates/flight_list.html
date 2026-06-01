@@ -1,0 +1,79 @@
+{% extends "daashboard2.html" %}
+{% load static %}
+
+{%  block AdminBody %}
+
+          <!-- Replace this content with the flight list code -->
+          <div class="page-header">
+            <h3 class="page-title"> Flight List </h3>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'daashboard2' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Flight List</li>
+              </ol>
+            </nav>
+          </div>
+          <a href="{% url 'flight_create' %}" class="btn btn-primary mb-3">Add Flight</a>
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Flight List</h4>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Flight Number</th>
+                          <th>Airline</th>
+                          <th>Capacity</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for flight in flights %}
+                          <tr>
+                            <td>{{ flight.flight_id }}</td>
+                            <td>{{ flight.flight_number }}</td>
+                            <td>{{ flight.airline }}</td>
+                            <td>{{ flight.capacity }}</td>
+                            <td>
+                              <a href="{% url 'flight_update' flight.flight_id %}" class="btn btn-primary btn-sm">Edit</a>
+                              <a href="{% url 'flight_delete' flight.flight_id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr>
+                            <td colspan="5">No flights available</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of flight list code -->
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
+  <!-- endinject -->
+  <!-- inject:js -->
+  <script src="{% static 'assets/js/off-canvas.js' %}"></script>
+  <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'assets/js/template.js' %}"></script>
+  <script src="{% static 'assets/js/settings.js' %}"></script>
+  <script src="{% static 'assets/js/todolist.js' %}"></script>
+  <!-- endinject -->
+</body>
+</html>
+{% endblock %}

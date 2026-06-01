@@ -1,0 +1,268 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Theater</title>
+    <style>
+        /* Your existing styles... */
+        .date-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .date-scroll {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            scrollbar-width: none; /* Hide scrollbar in Firefox */
+        }
+
+        .date-scroll::-webkit-scrollbar {
+            display: none; /* Hide scrollbar in WebKit browsers (Chrome, Safari) */
+        }
+
+        .date-scroll div {
+            display: inline-block;
+            padding: 0 20px; /* Add space around each date */
+            background-color: aqua;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .date-scroll div:not(:last-child)::after {
+            content: '|'; /* Vertical divider */
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white; /* Divider color */
+            font-size: 24px;
+            padding-left: 10px; /* Space between date and divider */
+        }
+
+        .date-scroll a {
+            text-decoration: none;
+            color: black; /* Text color */
+        }
+
+        .date-scroll a.selected {
+            font-weight: bold;
+            color: #007bff; /* Highlight color for selected date */
+        }
+
+        .scroll-buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            opacity: 50%;
+            height: 35px;
+        }
+
+        .scroll-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            pointer-events: all;
+        }
+
+        .scroll-buttons button:focus {
+            outline: none;
+        }
+
+        .theater-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            margin-left: 33px;
+            width: 95%;
+            
+        }
+
+        .theater-list li {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #dee2e6; /* Border color */
+            background-color: #F5F7F8; /* Background color */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .theater-card-container {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 20px;
+            padding: 10px 0;
+            scrollbar-width: none; /* Hide scrollbar in Firefox */
+        }
+
+        .theater-card-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar in WebKit browsers (Chrome, Safari) */
+        }
+
+        .theater-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 150px;
+            text-align: center;
+        }
+
+        .theater-card h4 {
+            margin: 0 0 10px;
+            font-size: 16px;
+            color: #007bff;
+        }
+
+        .theater-card a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .theater-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* New Styles for Movie Thumbnail */
+        .movie-thumbnail {
+            background-image: url('{% static "movieBack.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 95%;
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .movie-thumbnail::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Background overlay with opacity */
+            border-radius: 20px;
+            z-index: 1;
+        }
+        
+        .movie-thumbnail img {
+            max-width: calc(100% - 60px); /* Adjust for padding on both sides */
+            max-height: calc(100% - 60px); /* Adjust for padding on both sides */
+            display: block;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for the thumbnail */
+            position: relative;
+            z-index: 2;
+            padding: 60px; /* Padding around the thumbnail */
+            box-sizing: border-box; /* Ensure padding is included in the width and height */
+        }
+        
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            width: 98%;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            text-align: center;
+            padding: 10px;
+            z-index: 3;
+            border-radius: 0 0 8px 8px; /* Rounded corners only at the bottom */
+        }
+        
+        #movieTitle {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <form method="GET" action="{% url 'select_theater' movie.id %}">
+        <div class="date-container">
+            <div class="date-scroll" id="dateScroll">
+                {% for date in date_list %}
+                    <div>
+                        <a href="{% url 'select_theater' movie.id %}?date={{ date|date:'M. d, Y' }}"
+                           class="{% if date == selected_date %}selected{% endif %}">
+                            {{ date|date:'M. d' }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="scroll-buttons">
+                <button type="button" onclick="scrollDateContainer(-200)">&#10094;</button>
+                <button type="button" onclick="scrollDateContainer(200)">&#10095;</button>
+            </div>
+        </div>
+    </form>
+    
+    {% if selected_date %}
+        <div class="movie-thumbnail">
+            <img src="{{ movie.image.url }}" alt="Movie Thumbnail">
+            <div class="movie-info">
+                <div id="movieTitle">{{ movie.name }}</div>
+            </div>
+        </div>
+        
+        <ul class="theater-list">
+            {% for theater, details in theater_timings.items %}
+                <li>
+                    <h2>{{ theater.name }}</h2>
+                    <div class="theater-card-container">
+                        {% for timing in details.timings %}
+                            <div class="theater-card">
+                                <a href="{% url 'confirm_reservation' movie.id theater.id timing.id %}?date={{ selected_date|date:'M. d, Y' }}" style="text-decoration: none;">
+                                    {{ timing.timing }}<br>Book Now
+                                </a>
+                                
+                            </div>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Please select a date to see available theaters.</p>
+    {% endif %}
+
+    <script>
+        function scrollDateContainer(amount) {
+            var container = document.getElementById('dateScroll');
+            container.scrollLeft += amount;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateScroll = document.getElementById('dateScroll');
+            var dates = dateScroll.querySelectorAll('a');
+            var selectedDate = Array.from(dates).some(date => date.classList.contains('selected'));
+
+            if (!selectedDate && dates.length > 0) {
+                // Automatically select the first date if no date is selected
+                dates[0].classList.add('selected');
+                window.location.href = dates[0].href; // Redirect to the first date's URL
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

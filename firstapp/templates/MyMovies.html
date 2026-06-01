@@ -1,0 +1,158 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{%  block body %}
+<style>
+    .out-ticket-container {
+        font-weight: lighter;
+        margin: 0px 0 0px 20px; /* Top, right, bottom, left margins */
+        width: 800px; /* Matches the width of ticket-container */
+        padding: 10px; /* Adds some padding for better spacing */
+        /* border: 1px solid #ddd; 
+        border-radius: 10px; 
+        background: #f9f9f9; */
+    }
+    .parent-container {
+        width: 100%;
+        padding: 0px; /* Optional padding */
+    }
+    
+    .ticket-container {
+        display: flex;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 800px;
+        margin: 20px 0 20px 20px; /* Align left with some spacing */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+    
+    
+    .ticket-left {
+        display: flex;
+        padding: 20px;
+        flex-grow: 2;
+    }
+    
+    .movie-poster {
+        height: 150px;
+        width: auto;
+        border-radius: 5px;
+        margin-right: 20px;
+    }
+    
+    .movie-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .movie-info h2 {
+        font-size: 1.5em;
+        margin: 0;
+        color: #333;
+    }
+    
+    .movie-info p {
+        margin: 5px 0;
+        color: #666;
+    }
+    
+    .seats i {
+        margin-right: 5px;
+        color: #555;
+    }
+    
+    .ticket-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: #f9f9f9;
+        border-left: 1px dashed #ddd;
+    }
+    
+    .qr-code {
+        height: 80px;
+        width: 80px;
+        margin-bottom: 30px;
+    }
+    
+    .booking-id {
+        font-size: 0.8em;
+        color: #999;
+    }
+    
+    .ticket-right h3 {
+        font-size: 1.2em;
+        color: #333;
+    }
+    
+    .ticket-footer {
+        padding: 20px;
+        background: #f9f9f9;
+        text-align: right;
+        border-top: 1px dashed #ddd;
+
+    }
+    
+    .ticket-footer p {
+        margin: 5px 0;
+    }
+    
+    {% comment %} .price {
+        float: right;
+        font-weight: bold;
+        color: #333;
+    }
+     {% endcomment %}
+    .amount-paid {
+        font-size: 1.2em;
+        font-weight:400;
+        color: #333;
+    }
+    
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<body>
+    {% for reservation_group in grouped_reservations %}
+    {% comment %} <a href="{% url 'generate_pdf' %}" class="btn btn-primary">Pritnt</a> {% endcomment %}
+
+    <div class="parent-container">
+    <div class="ticket-container">
+        <div class="ticket-left">
+            <img src="{{ reservation_group.engagement.movie.image.url }}" alt="Movie Poster" class="movie-poster">
+            <div class="movie-info">
+                <h2>{{ reservation_group.engagement.movie.name }}</h2>
+                <p> {{ reservation_group.engagement.theater.name }}:{{ reservation_group.engagement.theater.addr }}</p>
+                <p>{{ reservation_group.engagement.movie.lang }}</p>
+                <p>{{ reservation_group.time.timing }} | {{ reservation_group.date }}</p>
+                <p>{{ reservation_group.engagement.screen.name }}</p>
+                <p class="seats"><i class="fa-solid fa-masks-theater"></i> {{ reservation_group.seats|join:", " }}</p>
+            </div>
+        </div>
+        <div class="ticket-right">
+            <img src="{% url 'qr_code_image' reservation_group.qr_code_data %}" alt="QR Code" class="qr-code">
+        <div class="ticket-footer">
+            <p class="amount-paid">AMOUNT PAID : <span class="price"> {{ reservation_group.total_price }} Rs</span></p>
+        </div>
+        
+            
+            
+        </div>
+        
+    </div>
+    <div class="out-ticket-container">
+        <p><strong>Reserved At:</strong> {{ reservation_group.reserved_at }}</p>
+        </div>
+    </div>
+        
+    {% endfor %}
+    
+
+    
+</body>
+{% endblock  %}

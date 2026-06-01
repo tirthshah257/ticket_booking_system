@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Booking List</title>
+</head>
+<body>
+    <h1>Movie Bookings</h1>
+    <a href="{% url 'movie_booking_create' %}">Add New Booking</a>
+    <ul>
+        {% for booking in bookings %}
+            <li>
+                <a href="{% url 'movie_booking_detail' booking.pk %}">Booking for {{ booking.user.username }} for movie {{ booking.movie.mv_name }}</a>
+                <a href="{% url 'movie_booking_update' booking.pk %}">Edit</a>
+                <a href="{% url 'movie_booking_delete' booking.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

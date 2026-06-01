@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #122d50;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container styles */
+        .full-width-container {
+            background-color: #122d50;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            position: relative; /* Ensure dropdown positioning works */
+        }
+
+        /* Centering content */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        /* Search button styling */
+        .search-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0073e6;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Dropdown styling */
+        .dropdown {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: sticky; /* Makes the dropdown sticky */
+            top: 0; /* Adjust the distance from the top as needed */
+            z-index: 1000; /* Ensure it appears above other content */
+            max-width: 100%; /* Ensure dropdown does not exceed the viewport width */
+            max-height: 400px; /* Set a reasonable max-height for better usability */
+            overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; /* Include padding and border in the width and height calculations */
+        }
+        
+/* Dropdown item styling */
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    color: #000000;
+}
+
+/* Dropdown item hover effect */
+.dropdown-item:hover {
+    background-color: #0073e6;
+    color: #ffffff;
+}
+
+/* Container for positioning dropdown */
+.search-box {
+    position: relative; /* Make sure dropdown is positioned relative to this container */
+}
+
+.flight-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.flight-info {
+    display: flex;
+    align-items: center;
+}
+.flight-info img {
+    height: 50px;
+    margin-right: 20px;
+}
+.flight-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.time-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.departure-time, .arrival-time {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.arrival-airport-code .departure-airport-code {
+    font-size: 18px; /* Slightly smaller than time */
+    margin-bottom: 5px; /* Adds some space between the code and the time */
+    color: #333;
+}
+
+.departure-airport-code{
+    margin-left: 40px;
+}
+
+
+/* Adjust styles for arrival airport code and time */
+.arrival-airport-code {
+    display: flex;
+    flex-direction: column; /* Stack the items vertically */
+    margin-left: 690px; /* Ensure this aligns with the layout */
+    text-align: right; /* Align text to the right for consistency */
+    text-align: center;
+}
+
+.arrival-airport-code .time-value {
+    margin-top: 5px; /* Add space between airport code and time */
+    color: grey;
+}
+
+.time-value {
+    font-size: 16px;
+    font-weight:200;
+    color: grey;
+}
+
+.flight-line {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    right: 0;
+    border: none;
+    height: 2px;
+    opacity: 50%;
+    background-color: #ccc;
+    width: 650px;
+}
+
+.flight-duration {
+    position: absolute;
+    top: -2px; /* Adjust based on the height of your content */
+    left: 370px;
+    padding: 0 10px; /* Optional: add some padding for a better visual */
+    color: #FF0060;
+    font-size: 17px;
+    z-index: 1; /* Ensure the duration is on top of the line */
+}
+
+.select-button {
+    background-color: #0046be;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.select-button:hover {
+    background-color: #003399;
+}
+.self-transfer {
+    color: #FF0060;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+    </style>
+    <script>
+        function searchAirports(query, field) {
+            if (query.length < 1) {
+                // Hide dropdown if query is too short
+                let dropdown = document.getElementById(`${field}-dropdown`);
+                if (dropdown) {
+                    dropdown.innerHTML = '';
+                    dropdown.style.display = 'none'; // Hide dropdown if query is too short
+                }
+                return;
+            }
+        
+            fetch(`/search_airports/?q=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Search results:', data); // Check data in console
+                    // Display the results in a dropdown below the input field
+                    let dropdown = document.getElementById(`${field}-dropdown`);
+                    if (!dropdown) {
+                        dropdown = document.createElement('div');
+                        dropdown.id = `${field}-dropdown`;
+                        dropdown.className = 'dropdown';
+                        const inputField = document.getElementById(field);
+                        inputField.parentNode.appendChild(dropdown);
+                        console.log('Dropdown created and appended');
+                    }
+        
+                    // Position the dropdown below the input field
+                    const rect = document.getElementById(field).getBoundingClientRect();
+                    const dropdownWidth = Math.min(rect.width, window.innerWidth - 20); // Ensure dropdown width fits within viewport
+                    dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+                    dropdown.style.left = `${rect.left + window.scrollX}px`;
+                    dropdown.style.width = `${dropdownWidth}px`; // Set width to fit within viewport
+                    dropdown.style.display = 'block'; // Ensure dropdown is visible
+        
+                    dropdown.innerHTML = '';
+                    data.forEach(airport => {
+                        let option = document.createElement('div');
+                        option.className = 'dropdown-item';
+                        option.innerText = `${airport.name} (${airport.code})`;
+                        option.onclick = () => {
+                            document.getElementById(field).value = `${airport.name} `;
+                            dropdown.innerHTML = '';
+                            dropdown.style.display = 'none'; // Hide dropdown after selection
+                        };
+                        dropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching airports:', error);
+                });
+        }
+        
+    </script>
+    
+    
+</head>
+<body>
+    <div class="container-fluid full-width-container">
+        <div class="content-wrapper">
+            <div class="search-box">
+                <h1 style="text-align: center;">Millions of cheap flights. One simple search.</h1>
+                <form id="search-form" method="post" action="{% url 'search_flights' %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="from">From</label>
+                            <input type="text" class="form-control" id="from" name="from" placeholder="Country, city or airport" oninput="searchAirports(this.value, 'from')" value="{{ request.POST.from|default:'' }}">
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="to">To</label>
+                            <input type="text" class="form-control" id="to" name="to" placeholder="Country, city or airport" oninput="searchAirports(this.value, 'to')" value="{{ request.POST.to|default:'' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="depart">Depart</label>
+                            <input type="date" class="form-control" id="depart" name="depart" value="{{ request.POST.depart|default:'' }}">
+                        </div>
+                        <div class="form-group col-md-2 mb-3">
+                            <label for="travellers">Travellers</label>
+                            <input type="number" class="form-control" id="travellers" name="travellers" placeholder="1 Adult" value="{{ request.POST.travellers|default:1 }}">
+                        </div>
+                    </div>
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1>Flight Search Results</h1>
+        
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        {% if schedules %}
+        {% for schedule in schedules %}
+        <div class="flight-card">
+            <div class="flight-info">
+                <img src="https://via.placeholder.com/50x50" alt="Airline Logo">
+                <div class="flight-details">
+                    <div class="flight-time">
+                        <div class="time-details">
+                            <!-- Departure Section -->
+                            <div class="time departure-time">
+                                <div class="departure-airport-code">
+                                    {{ schedule.departure_airport.code }}
+                                </div>
+                                <div class="time-value">
+                                    {% if schedule.departure_time.date == schedule.arrival_time.date %}
+                                    {{ schedule.departure_time|date:"H:i, M j" }}
+                                    {% else %}
+                                    {{ schedule.departure_time|date:"H:i, M j" }}
+                                    {% endif %}
+                                </div>
+                            </div>
+        
+                            <!-- Flight duration positioned at the top of the line -->
+                            <div class="flight-duration">
+                                {{ schedule.duration_hours }}h {{ schedule.duration_minutes }}m 
+                                {% if schedule.stops %}
+                                    {{ schedule.stops }} stop{% if schedule.stops > 1 %}s{% endif %} via {{ schedule.stopover_airport.code }}
+                                {% endif %}
+                            </div>
+        
+                            <!-- Arrival Section -->
+                            <div class="time arrival-time">
+                                <div class="arrival-airport-code">
+                                    {{ schedule.arrival_airport.code }}
+                                    <div class="time-value">
+                                        {% if schedule.departure_time.date == schedule.arrival_time.date %}
+                                        {{ schedule.arrival_time|date:"H:i, M j" }}
+                                        {% else %}
+                                        {{ schedule.arrival_time|date:"H:i, M j" }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="flight-line">
+                    </div>
+        
+                    {% if schedule.self_transfer %}
+                        <div class="self-transfer">! Self-transfer</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <div class="flight-price">₹{{ schedule.price }}</div>
+                <a class="select-button" href="{% url 'select_flight' schedule.schedule_id%}">Select</a>
+            </div>
+        </div>
+        
+        {% endfor %}
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No flights found for the selected criteria.
+            </div>
+        {% endif %}
+    </div>
+
+    
+    
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

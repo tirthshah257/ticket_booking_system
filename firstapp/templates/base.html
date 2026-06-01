@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Title -->
+    <title>About</title>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'css2/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css2/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css2/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css2/jquery.mCustomScrollbar.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/templatemo-hexashop.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/lightbox.css' %}">
+
+    <!-- Icons -->
+    <link rel="icon" href="{% static 'images2/fevicon.png' %}" type="image/png" />
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div> -->
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'user_Buses'  %}">BUS</a></li>
+                            <li class="scroll-to-section"><a href="#women">MOVIE</a></li>
+                            <li class="scroll-to-section"><a href="#kids">FLIGHT</a></li>
+                            {% if request.session.email %}
+                            <li class="scroll-to-section"><a href="{% url 'Bus_bookings_list' %}">My Bookings</a></li>
+                            
+                            <li class="scroll-to-section"><a href="{% url 'logout_view' %}">Logout</a></li>
+                            {% endif %}
+                            <li class="submenu">
+                                <a href="javascript:;">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="products.html">Products</a></li>
+                                    <li><a href="single-product.html">Single Product</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="javascript:;">Features</a>
+                                <ul>
+                                    <li><a href="#">Features Page 1</a></li>
+                                    <li><a href="#">Features Page 2</a></li>
+                                    <li><a href="#">Features Page 3</a></li>
+                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+<main style="margin-top:130px ;">
+    {% block body %}
+    {% endblock %}
+</main>
+    <!-- Javascript files-->
+    <script src="{% static 'js2/jquery.min.js' %}"></script>
+    <script src="{% static 'js2/popper.min.js' %}"></script>
+    <script src="{% static 'js2/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js2/jquery-3.0.0.min.js' %}"></script>
+    <script src="{% static 'js2/plugin.js' %}"></script>
+    <script src="{% static 'js2/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <script src="{% static 'js2/custom.js' %}"></script>
+
+    <!-- Additional JavaScript files -->
+    <script src="{% static 'assets3/js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'assets3/js/popper.js' %}"></script>
+    <script src="{% static 'assets3/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets3/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets3/js/accordions.js' %}"></script>
+    <script src="{% static 'assets3/js/datepicker.js' %}"></script>
+    <script src="{% static 'assets3/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'assets3/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'assets3/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'assets3/js/imgfix.min.js' %}"></script>
+    <script src="{% static 'assets3/js/slick.js' %}"></script>
+    <script src="{% static 'assets3/js/lightbox.js' %}"></script>
+    <script src="{% static 'assets3/js/isotope.js' %}"></script>
+    <script src="{% static 'assets3/js/custom.js' %}"></script>
+
+    <script>
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+                selectedClass = $(this).attr("data-rel");
+                $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+                setTimeout(function() {
+                    $("."+selectedClass).fadeIn();
+                    $("#portfolio").fadeTo(50, 1);
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>

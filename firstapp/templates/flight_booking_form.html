@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Booking Form</title>
+</head>
+<body>
+    <h1>{% if booking %}Edit Flight Booking{% else %}Add New Flight Booking{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="schedule">Flight Schedule:</label>
+        <select id="schedule" name="schedule" required>
+            {% for schedule in schedules %}
+                <option value="{{ schedule.pk }}" {% if booking and booking.schedule.pk == schedule.pk %}selected{% endif %}>{{ schedule }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="passenger">Passenger:</label>
+        <select id="passenger" name="passenger" required>
+            {% for passenger in passengers %}
+                <option value="{{ passenger.pk }}" {% if booking and booking.passenger.pk == passenger.pk %}selected{% endif %}>{{ passenger.username }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="seat_number">Seat Number:</label>
+        <input type="text" id="seat_number" name="seat_number" value="{{ booking.seat_number  }}" required><br>
+        <button type="submit">{% if booking %}Update{% else %}Create{% endif %}</button>
+    </form>
+    <a href="{% url 'flight_booking_list' %}">Cancel</a>
+</body>
+</html>
