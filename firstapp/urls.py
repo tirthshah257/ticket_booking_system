@@ -9,7 +9,7 @@ def qr_code_image(request, qr_code_data):
 
 
 
- 
+    
 urlpatterns = [
      path('login/',views.process_login,name='login'),
      path('forget_pass/',views.forget_pass,name='forget_pass'),
